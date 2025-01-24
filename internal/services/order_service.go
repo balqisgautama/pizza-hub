@@ -55,7 +55,7 @@ func (s *OrderService) AddOrder(menuID, chefID int) (*models.Order, error) {
 	order := &models.Order{
 		ID:     s.nextID,
 		MenuID: menuID,
-		ChefID: chefID,
+		ChefID: chef.ID,
 		Status: "processing",
 	}
 	s.orders = append(s.orders, order)

@@ -1,39 +1,35 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
 	"pizza-hub/internal/handlers"
 	"pizza-hub/internal/services"
 
-	"github.com/gorilla/mux"
+	"github.com/go-playground/validator/v10"
+	"github.com/labstack/echo"
 )
 
 func main() {
-	r := mux.NewRouter()
+	e := echo.New()
+	validate := validator.New()
 
 	chefService := services.NewChefService()
 	menuService := services.NewMenuService()
 	orderService := services.NewOrderService(chefService, menuService)
 
 	// Chef endpoints
-	chefHandler := handlers.NewChefHandler(chefService)
-	r.HandleFunc("/chefs", chefHandler.CreateChef).Methods("POST")
-	r.HandleFunc("/chefs", chefHandler.GetChefs).Methods("GET")
+	chefHandler := handlers.NewChefHandler(validate, chefService)
+	e.POST("/chefs", chefHandler.CreateChef)
+	e.GET("/chefs", chefHandler.GetChefs)
 
 	// Menu endpoints
-	menuHandler := handlers.NewMenuHandler(menuService)
-	r.HandleFunc("/menus", menuHandler.CreateMenu).Methods("POST")
-	r.HandleFunc("/menus", menuHandler.GetMenus).Methods("GET")
+	menuHandler := handlers.NewMenuHandler(validate, menuService)
+	e.POST("/menus", menuHandler.CreateMenu)
+	e.GET("/menus", menuHandler.GetMenus)
 
 	// Order endpoints
-	orderHandler := handlers.NewOrderHandler(chefService, menuService, orderService)
-	r.HandleFunc("/orders", orderHandler.CreateOrder).Methods("POST")
-	r.HandleFunc("/orders", orderHandler.GetOrders).Methods("GET")
+	orderHandler := handlers.NewOrderHandler(validate, chefService, menuService, orderService)
+	e.POST("/orders", orderHandler.CreateOrder)
+	e.GET("/orders", orderHandler.GetOrders)
 
-	log.Println("Starting server at port 8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		log.Fatal(err)
-	}
+	e.Logger.Fatal(e.Start(":8080"))
 }

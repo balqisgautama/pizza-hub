@@ -4,9 +4,6 @@ FROM golang:1.23-alpine AS builder
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
-# Install air-verse
-RUN go install github.com/air-verse/air@latest
-
 # Copy go.mod and go.sum files
 COPY go.mod go.sum ./
 
@@ -36,4 +33,4 @@ COPY --from=builder /app /app
 EXPOSE 8000
 
 # Run the application with nodemon
-CMD ["/home/pizza-hub", "air", "-c", ".air.toml"]
+CMD ["/home/pizza-hub"]

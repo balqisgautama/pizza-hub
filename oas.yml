@@ -1,0 +1,44 @@
+openapi: 3.0.0  
+info:  
+  title: PizzaHub API  
+  version: 1.0.0  
+paths:  
+  /chef:  
+    post:  
+      summary: Add a new chef  
+      responses:  
+        '201':  
+          description: Chef added  
+  /menus:  
+    get:  
+      summary: List of menus  
+      responses:  
+        '200':  
+          description: List of available pizzas  
+          content:  
+            application/json:  
+              schema:  
+                type: object  
+                additionalProperties:  
+                  type: integer  
+  /orders:  
+    post:  
+      summary: Add a new order  
+      requestBody:  
+        required: true  
+        content:  
+          application/json:  
+            schema:  
+              type: object  
+              properties:  
+                ID:  
+                  type: integer  
+                Pizza:  
+                  type: string  
+      responses:  
+        '201':  
+          description: Order assigned to chef  
+        '400':  
+          description: Invalid pizza type  
+        '503':  
+          description: No available chef  

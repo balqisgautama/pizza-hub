@@ -3,26 +3,37 @@ package main
 import (
 	"log"
 	"net/http"
-	"pizza-hub/internal/api"
-	"sync"
+
+	"pizza-hub/internal/handlers"
+	"pizza-hub/internal/services"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	ph := api.NewPizzaHubAPI()
-	var wg sync.WaitGroup
+	r := mux.NewRouter()
 
-	http.Handle("/", ph)
+	chefService := services.NewChefService()
+	menuService := services.NewMenuService()
+	orderService := services.NewOrderService(chefService, menuService)
 
-	// Start serving chefs
-	for _, chef := range ph.Chefs {
-		wg.Add(1)
-		go chef.Serve(&wg)
+	// Chef endpoints
+	chefHandler := handlers.NewChefHandler(chefService)
+	r.HandleFunc("/chefs", chefHandler.CreateChef).Methods("POST")
+	r.HandleFunc("/chefs", chefHandler.GetChefs).Methods("GET")
+
+	// Menu endpoints
+	menuHandler := handlers.NewMenuHandler(menuService)
+	r.HandleFunc("/menus", menuHandler.CreateMenu).Methods("POST")
+	r.HandleFunc("/menus", menuHandler.GetMenus).Methods("GET")
+
+	// Order endpoints
+	orderHandler := handlers.NewOrderHandler(chefService, menuService, orderService)
+	r.HandleFunc("/orders", orderHandler.CreateOrder).Methods("POST")
+	r.HandleFunc("/orders", orderHandler.GetOrders).Methods("GET")
+
+	log.Println("Starting server at port 8080")
+	if err := http.ListenAndServe(":8080", r); err != nil {
+		log.Fatal(err)
 	}
-
-	log.Println("PizzaHub is running on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
-	}
-
-	wg.Wait()
 }

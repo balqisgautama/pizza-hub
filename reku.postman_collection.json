@@ -1,0 +1,904 @@
+{
+	"info": {
+		"_postman_id": "22b414a2-3355-409a-a117-faa2ce83498c",
+		"name": "reku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15439567"
+	},
+	"item": [
+		{
+			"name": "url-shortener",
+			"item": [
+				{
+					"name": "GENERATE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var shortened = pm.response.json().shortened;",
+									"pm.environment.set(\"shortened\", shortened);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original\": \"https://www.google.com/\",\n    \"expiry\": 60\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/shorten",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shorten"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"original\": \"https://www.google.com/\",\n    \"expiry\": 60\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/shorten",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"shorten"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 21 Jan 2025 09:59:52 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "172"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"original\": \"https://www.google.com/\",\n    \"base_url\": \"http://localhost:8080\",\n    \"shortened\": \"vfMWCOOF\",\n    \"click_count\": 0,\n    \"expiry\": 60,\n    \"expired_at\": 1737453651,\n    \"created_at\": 1737453591\n}"
+						}
+					]
+				},
+				{
+					"name": "GET BY SHORTENED URL",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/shorten/{{shortened}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shorten",
+								"{{shortened}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/shorten/{{shortened}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"shorten",
+										"{{shortened}}"
+									]
+								}
+							},
+							"status": "Found",
+							"code": 302,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 21 Jan 2025 10:00:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "172"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"original\": \"https://www.google.com/\",\n    \"base_url\": \"http://localhost:8080\",\n    \"shortened\": \"vfMWCOOF\",\n    \"click_count\": 2,\n    \"expiry\": 60,\n    \"expired_at\": 1737453651,\n    \"created_at\": 1737453591\n}"
+						}
+					]
+				},
+				{
+					"name": "UPDATE EXPIRED DATE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"shortened\": \"{{shortened}}\",\n    \"expiry\": 90\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/shorten",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shorten"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"shortened\": \"{{shortened}}\",\n    \"expiry\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/shorten",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"shorten"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Jan 2025 10:13:51 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "162"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"original\": \"https://www.google.com/\",\n    \"base_url\": \"http://localhost:8080\",\n    \"shortened\": \"52wQOPn_\",\n    \"click_count\": 0,\n    \"expiry\": 0,\n    \"expired_at\": 0,\n    \"created_at\": 1737540808\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "pizza-hub",
+			"item": [
+				{
+					"name": "menus",
+					"item": [
+						{
+							"name": "GET",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/menus",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menus"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "localhost:8080/menus",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"menus"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:18:15 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"BBQ\",\n        \"duration\": 10\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "ADD",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"BBQ\",\n    \"duration\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/menus",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menus"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"BBQ\",\n    \"duration\": 10\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/menus",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"menus"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:16:25 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "36"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 1,\n    \"name\": \"BBQ\",\n    \"duration\": 10\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "orders",
+					"item": [
+						{
+							"name": "GET",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/orders",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "localhost:8080/orders",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:17:06 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "110"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"menu_id\": 1,\n        \"chef_id\": 1,\n        \"status\": \"completed\"\n    },\n    {\n        \"id\": 2,\n        \"menu_id\": 1,\n        \"chef_id\": 2,\n        \"status\": \"completed\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "ADD",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"menu_id\": 1,\n    \"chef_id\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/orders",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"menu_id\": 1,\n    \"chef_id\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/orders",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:19:01 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "55"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 3,\n    \"menu_id\": 1,\n    \"chef_id\": 2,\n    \"status\": \"processing\"\n}"
+								},
+								{
+									"name": "menu not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"menu_id\": 3,\n    \"chef_id\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/orders",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:16:48 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "15"
+										}
+									],
+									"cookie": [],
+									"body": "menu not found\n"
+								},
+								{
+									"name": "chef not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"menu_id\": 1,\n    \"chef_id\": 3\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/orders",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:18:50 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "15"
+										}
+									],
+									"cookie": [],
+									"body": "chef not found\n"
+								},
+								{
+									"name": "chef is busy",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"menu_id\": 1,\n    \"chef_id\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/orders",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:19:23 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "13"
+										}
+									],
+									"cookie": [],
+									"body": "chef is busy\n"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "chefs",
+					"item": [
+						{
+							"name": "GET",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/chefs",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"chefs"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "localhost:8080/chefs",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"chefs"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:19:38 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "97"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"gautama-01\",\n        \"status\": \"available\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"gautama-02\",\n        \"status\": \"busy\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "ADD",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"gautama-02\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/chefs",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"chefs"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"gautama-02\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/chefs",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"chefs"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 24 Jan 2025 11:16:30 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "50"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 2,\n    \"name\": \"gautama-02\",\n    \"status\": \"available\"\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

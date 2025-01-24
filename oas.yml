@@ -3,27 +3,9 @@ info:
   title: PizzaHub API  
   version: 1.0.0  
 paths:  
-  /chef:  
+  /chefs:  
     post:  
       summary: Add a new chef  
-      responses:  
-        '201':  
-          description: Chef added  
-  /menus:  
-    get:  
-      summary: List of menus  
-      responses:  
-        '200':  
-          description: List of available pizzas  
-          content:  
-            application/json:  
-              schema:  
-                type: object  
-                additionalProperties:  
-                  type: integer  
-  /orders:  
-    post:  
-      summary: Add a new order  
       requestBody:  
         required: true  
         content:  
@@ -31,14 +13,179 @@ paths:
             schema:  
               type: object  
               properties:  
-                ID:  
-                  type: integer  
-                Pizza:  
+                name:  
                   type: string  
+              example:  
+                name: "Chef John"  
       responses:  
         '201':  
-          description: Order assigned to chef  
-        '400':  
-          description: Invalid pizza type  
-        '503':  
-          description: No available chef  
+          description: Chef created  
+          content:  
+            application/json:  
+              schema:  
+                type: object  
+                properties:  
+                  id:  
+                    type: integer  
+                  name:  
+                    type: string  
+                  status:  
+                    type: string 
+              example:  
+                id: 1  
+                name: "Chef John"  
+                status: "available"
+    get:  
+      summary: Get list of chefs  
+      responses:  
+        '200':  
+          description: List of chefs  
+          content:  
+            application/json:  
+              schema:  
+                type: array  
+                items:  
+                  type: object  
+                  properties:  
+                    id:  
+                      type: integer  
+                    name:  
+                      type: string  
+                    status:  
+                      type: string 
+              example:  
+                - id: 1  
+                  name: "Chef John" 
+                  status: "available"  
+                - id: 2  
+                  name: "Chef Jane"  
+                  status: "busy"
+  /menus:  
+    post:  
+      summary: Add a new menu item  
+      requestBody:  
+        required: true  
+        content:  
+          application/json:  
+            schema:  
+              type: object  
+              properties:  
+                name:  
+                  type: string  
+                processing_time:  
+                  type: integer  
+              example:  
+                name: "Pizza Cheese"  
+                processing_time: 3  
+      responses:  
+        '201':  
+          description: Menu item created  
+          content:  
+            application/json:  
+              schema:  
+                type: object  
+                properties:  
+                  id:  
+                    type: integer  
+                  name:  
+                    type: string  
+                  duration:  
+                    type: integer  
+                    description: "in second"
+              example:  
+                id: 1  
+                name: "Pizza Cheese"  
+                duration: 3  
+    get:  
+      summary: Get list of menu items  
+      responses:  
+        '200':  
+          description: List of menu items  
+          content:  
+            application/json:  
+              schema:  
+                type: array  
+                items:  
+                  type: object  
+                  properties:  
+                    id:  
+                      type: integer  
+                    name:  
+                      type: string  
+                    duration:  
+                      type: integer  
+                      description: "in second"
+              example:  
+                - id: 1  
+                  name: "Pizza Cheese"  
+                  duration: 3  
+                - id: 2  
+                  name: "Pizza BBQ"  
+                  duration: 5  
+  /orders:  
+    post:  
+      summary: Place a new order  
+      requestBody:  
+        required: true  
+        content:  
+          application/json:  
+            schema:  
+              type: object  
+              properties:  
+                menu_id:  
+                  type: integer  
+                chef_id:  
+                  type: integer  
+              example:  
+                menu_id: 1  
+                chef_id: 1  
+      responses:  
+        '201':  
+          description: Order created  
+          content:  
+            application/json:  
+              schema:  
+                type: object  
+                properties:  
+                  id:  
+                    type: integer  
+                  menu_id:  
+                    type: integer  
+                  chef_id:  
+                    type: integer  
+                  status:  
+                    type: string  
+              example:  
+                id: 1  
+                menu_id: 1  
+                chef_id: 1  
+                status: "processing"  
+    get:  
+      summary: Get list of orders  
+      responses:  
+        '200':  
+          description: List of orders  
+          content:  
+            application/json:  
+              schema:  
+                type: array  
+                items:  
+                  type: object  
+                  properties:  
+                    id:  
+                      type: integer  
+                    menu_id:  
+                      type: integer  
+                    chef_id:  
+                      type: integer  
+                    status:  
+                      type: string  
+              example:  
+                - id: 1  
+                  menu_id: 1  
+                  chef_id: 1  
+                  status: "completed"  
+                - id: 2  
+                  menu_id: 2  
+                  chef_id: 2  
+                  status: "processing"  
